@@ -12,16 +12,25 @@ import lombok.Setter;
 @Setter
 public class User {
 
+    // ✅ Getters and Setters
+    @Setter
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uid;
 
+    @Setter
+    @Getter
     @Column(length = 50)
     private String firstName;
 
+    @Setter
+    @Getter
     @Column(length = 50)
     private String lastName;
 
+    @Setter
+    @Getter
     @Column(length = 5, unique = true)
     private String employeeid;
 
@@ -35,20 +44,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "cid", referencedColumnName = "id")
     private Chapter chapter;
-
-    // ✅ Getters and Setters
-    public Integer getUid() { return uid; }
-    public void setUid(Integer uid) { this.uid = uid; }
-
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-
-    public String getEmployeeid() { return employeeid; }
-    public void setEmployeeid(String employeeid) { this.employeeid = employeeid; }
-
 
 
 }
