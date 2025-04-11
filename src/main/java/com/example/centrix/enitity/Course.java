@@ -10,17 +10,21 @@ import org.w3c.dom.Text;
 @Getter
 @Setter
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "course_id")
     private Integer courseId;
 
     private String title;
 
-    @Column(name = "description")
     private String description;
 
     private String duration;
-    private String progress;
+
+    @ManyToOne
+    @JoinColumn(name = "cid", referencedColumnName = "id")
+    private Chapter chapter;
 
     @ManyToOne
     @JoinColumn(name = "tid", referencedColumnName = "tid")
