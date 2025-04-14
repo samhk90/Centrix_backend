@@ -1,6 +1,6 @@
 package com.example.centrix.repository;
 
-import com.example.centrix.enitity.Trainer;
+import com.example.centrix.entity.Trainer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TrainerRepository extends JpaRepository<Trainer, Integer> {

@@ -1,4 +1,4 @@
-package com.example.centrix.enitity;
+package com.example.centrix.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

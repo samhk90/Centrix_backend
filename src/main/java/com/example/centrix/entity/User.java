@@ -1,4 +1,4 @@
-package com.example.centrix.enitity;
+package com.example.centrix.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -34,6 +34,13 @@ public class User {
     @Column(length = 5, unique = true)
     private String employeeid;
 
+    @Setter
+    @Getter
+    @Column(length = 50, unique = true)
+    private String email;
+
+    @Setter
+    @Getter
     @Column(length = 20)
     private String password;
 

@@ -1,7 +1,7 @@
 // src/main/java/com/yourcompany/lms/controller/UserController.java
 package com.example.centrix.contollers;
 
-import com.example.centrix.enitity.User;
+import com.example.centrix.entity.User;
 import com.example.centrix.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

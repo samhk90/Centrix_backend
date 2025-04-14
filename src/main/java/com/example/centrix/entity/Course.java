@@ -1,10 +1,10 @@
-package com.example.centrix.enitity;
+package com.example.centrix.entity;
 
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.w3c.dom.Text;
+
 @Entity
 @Table(name = "course")
 @Getter
@@ -21,6 +21,9 @@ public class Course {
     private String description;
 
     private String duration;
+
+    @Column(name="NOS")
+    private Integer nos;
 
     @ManyToOne
     @JoinColumn(name = "cid", referencedColumnName = "id")
