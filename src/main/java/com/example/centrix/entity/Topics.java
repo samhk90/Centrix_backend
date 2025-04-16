@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "topics")
 @Getter
@@ -19,7 +23,15 @@ public class Topics {
 
     private Integer noa;            // number of artifacts
 
-    @ManyToOne
-    @JoinColumn(name = "section_id", referencedColumnName = "section_id")
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "section_id")
     private Sections sections;
+
+    @OneToMany(mappedBy = "topics", cascade = CascadeType.ALL)
+    private List<Artifacts> artifacts;
+
+    public void setArtifacts(List<Artifacts> artifacts) {
+        this.artifacts = artifacts;
+    }
 }

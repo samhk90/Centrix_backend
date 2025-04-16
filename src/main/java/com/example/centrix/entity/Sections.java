@@ -1,5 +1,7 @@
 package com.example.centrix.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,13 +20,19 @@ public class Sections {
 
     private String sectionTitle;
 
-    @Column(name = "number_of_topics")  // changed from 'not'
-    private Integer numberOfTopics;      // renamed field
+    @Column(name = "number_of_topics")
+    private Integer numberOfTopics;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "sections", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Topics> topics;
+
     public void setTopics(List<Topics> topics) {
+        this.topics = topics;
     }
 }

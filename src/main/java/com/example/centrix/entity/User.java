@@ -12,9 +12,8 @@ import lombok.Setter;
 @Setter
 public class User {
 
-    // ✅ Getters and Setters
-    @Setter
-    @Getter
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uid;
