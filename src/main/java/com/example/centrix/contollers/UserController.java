@@ -25,10 +25,10 @@ public class UserController {
     // GET all users
     @GetMapping("/users")
     public List<User> getAllUsers() {
-
-        System.out.println("user"+ userRepository.findAll());
-        return  userRepository.findAll();
-
+        logger.info("Fetching all users");
+        List<User> users = userRepository.findAll();
+        logger.debug("Found {} users", users.size());
+        return users;
     }
 
     // GET user by ID

@@ -51,7 +51,7 @@ public class CourseService {
     }
 
     @Transactional(readOnly = true)
-    public List<Course> getCoursesWithSectionsAndTopics(Integer courseId) {
+    public List<Course> getCoursesWithSectionsAndTopics(Integer courseId, boolean includeArtifacts) {
         List<Course> courses = courseRepository.findBycourseId(courseId);
         if (courses.isEmpty()) {
             return courses;
@@ -61,9 +61,14 @@ public class CourseService {
             List<Sections> sections = sectionRepository.findByCourse_CourseId(course.getCourseId());
             for (Sections section : sections) {
                 List<Topics> topics = topicRepository.findBySections_SectionId(section.getSectionId());
-                for(Topics topic : topics) {
-                    List<Artifacts> artifacts = artifactsRepository.findByTopics_TopicId(topic.getTopicId());
-                    topic.setArtifacts(artifacts);
+                if (includeArtifacts) {
+                    for (Topics topic : topics) {
+                        List<Artifacts> artifacts = artifactsRepository.findByTopics_TopicId(topic.getTopicId());
+                        topic.setArtifacts(artifacts);
+                    } 
+                } else {
+                    // Explicitly set artifacts to null when not including them
+                    topics.forEach(topic -> topic.setArtifacts(null));
                 }
                 section.setTopics(topics);
             }

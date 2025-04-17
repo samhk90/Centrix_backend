@@ -8,11 +8,14 @@ import lombok.Setter;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "topics")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Topics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +31,8 @@ public class Topics {
     @JoinColumn(name = "section_id")
     private Sections sections;
 
-    @OneToMany(mappedBy = "topics", cascade = CascadeType.ALL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @OneToMany(mappedBy = "topics", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Artifacts> artifacts;
 
     public void setArtifacts(List<Artifacts> artifacts) {
