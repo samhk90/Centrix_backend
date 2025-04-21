@@ -1,5 +1,5 @@
 // src/main/java/com/yourcompany/lms/controller/UserController.java
-package com.example.centrix.contollers;
+package com.example.centrix.controllers;
 
 import com.example.centrix.entity.User;
 import com.example.centrix.repository.UserRepository;

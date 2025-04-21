@@ -1,4 +1,4 @@
-package com.example.centrix.contollers;
+package com.example.centrix.controllers;
 
 
 import com.example.centrix.service.AuthService;

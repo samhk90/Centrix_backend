@@ -1,4 +1,4 @@
-package com.example.centrix.contollers;
+package com.example.centrix.controllers;
 
 
 import com.example.centrix.entity.Course;
@@ -22,6 +22,7 @@ public class CourseController {
         System.out.println(courses);
         return courses;
     }
+
     @PostMapping("/enrolledcourse/{courseId}")
     public List<Course> getCoursesWithSTA(@PathVariable Integer courseId) {
         boolean flag=true;
