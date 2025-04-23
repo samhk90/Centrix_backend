@@ -1,12 +1,10 @@
 package com.example.centrix.service;
 
-import com.example.centrix.entity.Assessment;
-import com.example.centrix.entity.Course;
-import com.example.centrix.entity.Questions;
-import com.example.centrix.entity.User;
+import com.example.centrix.entity.*;
 import com.example.centrix.repository.AssessmentRepository;
 import com.example.centrix.repository.AuthRepository;
 import com.example.centrix.repository.QuestionsRepository;
+import com.example.centrix.repository.UserResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,20 @@ public class AssessmentService {
 
     @Autowired
     private QuestionsRepository questionsRepository;
+    @Autowired
+    private UserResponseRepository userResponseRepository;
 
     public List<Assessment> getCoursesByCourseId(Integer courseId) {
         return assessmentRepository.findByCourse_CourseId(courseId);
     }
-    public List<Questions> getQuetions(Integer assessmentId) {
-        return questionsRepository.findByAssessment_AssessmentId(assessmentId);
+    public List<Questions> getQuetions(Integer assessmentId, Integer queId) {
+        Integer newQueId=queId+1;
+        return questionsRepository.findByAssessment_AssessmentIdAndQueId(assessmentId,newQueId);
+    }
+    public List<Assessment> getAssesmentByassessmentId(Integer assessmentId) {
+        return assessmentRepository.findByAssessmentId(assessmentId);
+    }
+    public UserResponse createUserResponse(UserResponse userResponse) {
+        return userResponseRepository.save(userResponse);
     }
 }
