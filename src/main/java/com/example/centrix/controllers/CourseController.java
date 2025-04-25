@@ -16,9 +16,9 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/courses")
-    public List<Course> getCourses() {
-        List <Course> courses = courseService.getCourses();
+    @GetMapping("/courses/{userId}")
+    public List<Course> getCourses(@PathVariable Integer userId) {
+        List <Course> courses = courseService.getCourses(userId);
         System.out.println(courses);
         return courses;
     }

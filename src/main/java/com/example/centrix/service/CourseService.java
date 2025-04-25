@@ -1,18 +1,15 @@
 package com.example.centrix.service;
 
-import com.example.centrix.entity.Artifacts;
-import com.example.centrix.entity.Course;
-import com.example.centrix.entity.Sections;
-import com.example.centrix.entity.Topics;
-import com.example.centrix.repository.ArtifactsRepository;
-import com.example.centrix.repository.CourseRepository;
-import com.example.centrix.repository.SectionRepository;
-import com.example.centrix.repository.TopicRepository;
+import com.example.centrix.entity.*;
+import com.example.centrix.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -28,11 +25,16 @@ public class CourseService {
 
     @Autowired
     private ArtifactsRepository artifactsRepository;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<Course> getCourses() {
+    public List<Course> getCourses(Integer userId) {
         List<Course> courses = courseRepository.findAll();
-        // Initialize the relationships to prevent lazy loading issues
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         courses.forEach(course -> {
             if (course.getChapter() != null) {
                 course.getChapter().getName();
@@ -42,7 +44,14 @@ public class CourseService {
             }
         });
         System.out.println("Number of courses found: " + courses.size());
-        return courses;
+        return courses.stream()
+                .filter(course ->
+                        // Filter unenrolled courses
+                        !enrollmentRepository.existsByUserAndCourse(user, course)
+                                // Filter courses by chapter
+                                && course.getChapter() != null
+                                && course.getChapter().getId().equals(user.getChapter().getId()))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

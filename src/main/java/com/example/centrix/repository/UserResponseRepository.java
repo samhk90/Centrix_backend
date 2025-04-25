@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface UserResponseRepository extends JpaRepository<UserResponse, Integer> {
+    UserResponse findByUserIdAndQuetionId(Integer userId, Integer quetionId);
 }

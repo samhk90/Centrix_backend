@@ -4,6 +4,7 @@ package com.example.centrix.controllers;
 import com.example.centrix.entity.Assessment;
 import com.example.centrix.entity.Questions;
 import com.example.centrix.entity.UserResponse;
+import com.example.centrix.entity.results;
 import com.example.centrix.service.AssessmentService;
 import com.example.centrix.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class AssessmentController {
     @Autowired
     private AssessmentService assessmentService;
@@ -34,5 +35,11 @@ public class AssessmentController {
     @PostMapping("/userresponse")
     public UserResponse createUserResponse(@RequestBody UserResponse userreponse) {
         return assessmentService.createUserResponse(userreponse);
+    }
+
+    @GetMapping("/calculateresult/{userId}/{assessmentId}")
+    public results calculateResult(@PathVariable Integer userId, @PathVariable Integer assessmentId,
+                                   @RequestParam Long timetaken) {
+        return assessmentService.calculateResult(userId, assessmentId,timetaken);
     }
 }
