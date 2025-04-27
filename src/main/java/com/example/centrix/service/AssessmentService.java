@@ -5,6 +5,7 @@ import com.example.centrix.repository.*;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -72,5 +73,16 @@ public class AssessmentService {
         result.setStatus(percentage >= assessment.getPassingMarks() ? "PASS" : "FAIL");
 
         return resultsRepository.save(result);
+    }
+
+    public results getResult(Integer userId, Integer assessmentId) {
+        results result = resultsRepository.findByUserIdAndAssessment_AssessmentId(userId, assessmentId);
+        if (result == null) {
+            throw new RuntimeException("Result not found for user " + userId + " and assessment " + assessmentId);
+        }
+        return result;
+    }
+    public List<results> getAllResults(Integer userId){
+        return  resultsRepository.findByUserId(userId);
     }
 }

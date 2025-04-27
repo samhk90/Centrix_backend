@@ -42,4 +42,12 @@ public class AssessmentController {
                                    @RequestParam Long timetaken) {
         return assessmentService.calculateResult(userId, assessmentId,timetaken);
     }
+    @GetMapping("/getresults/{userId}/{assessmentId}")
+    public results getResult(@PathVariable Integer userId,@PathVariable Integer assessmentId){
+        return assessmentService.getResult(userId,assessmentId);
+    }
+    @GetMapping("/getAllResults/{userId}")
+    public List<results> getAllResults(@PathVariable Integer userId){
+        return  assessmentService.getAllResults(userId);
+    }
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalTime;
+
 @Entity()
 @Table(name = "assessment")
 @Getter
@@ -18,7 +20,7 @@ public class Assessment {
     private Integer numberOfQuestions;
     private Integer flag;
     private Integer totalMarks;
-    private  Integer duration;
+    private Integer duration;
     private Integer passingMarks;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
