@@ -18,30 +18,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uid;
 
-    @Setter
-    @Getter
     @Column(length = 50)
     private String firstName;
-
-    @Setter
-    @Getter
     @Column(length = 50)
     private String lastName;
-
-    @Setter
-    @Getter
     @Column(length = 5, unique = true)
     private String employeeid;
-
-    @Setter
-    @Getter
     @Column(length = 50, unique = true)
     private String email;
-
-    @Setter
-    @Getter
     @Column(length = 20)
     private String password;
+    private int flag;
 
      @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role", referencedColumnName = "id")

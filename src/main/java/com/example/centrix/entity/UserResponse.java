@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "user_response", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"userId", "quetionId"})
+        @UniqueConstraint(columnNames = {"userId", "que_id"})
 })
 @Getter
 @Setter
@@ -18,8 +18,9 @@ public class UserResponse {
     @Column(nullable = false)
     private Integer userId;
 
-    @Column(nullable = false)
-    private Integer quetionId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "que_id", referencedColumnName = "que_id")
+    private Questions question;
     private String selectedoption;
     private Boolean isresponsecorrect;
 

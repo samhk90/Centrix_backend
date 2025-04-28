@@ -50,4 +50,12 @@ public class AssessmentController {
     public List<results> getAllResults(@PathVariable Integer userId){
         return  assessmentService.getAllResults(userId);
     }
+    @GetMapping("/getuserresponse/{assessmentId}")
+    public  List<UserResponse> getUserResponse(@PathVariable Integer assessmentId){
+        return assessmentService.getUserResponsesByAssessmentId(assessmentId);
+    }
+    @GetMapping("/assessments/user/{userId}")
+    public List<Assessment> getAssessmentsByUserId(@PathVariable Integer userId) {
+        return assessmentService.getAssessmentsByUserId(userId);
+    }
 }

@@ -27,5 +27,7 @@ public class Assessment {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Course course;
 
+
+
     // Getters and Setters
 }
