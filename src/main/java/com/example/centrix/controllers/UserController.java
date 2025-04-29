@@ -37,9 +37,16 @@ public class UserController {
         return userMapper.toUserDtoList(users);
     }
 
+<<<<<<< HEAD
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Integer id) {
         User user = userRepository.findById(id)
+=======
+    // GET user by ID
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        return userRepository.findById(id)
+>>>>>>> 4c4aa272be2ec416caafdfb6986143e85feeddf3
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return userMapper.toDto(user);
     }

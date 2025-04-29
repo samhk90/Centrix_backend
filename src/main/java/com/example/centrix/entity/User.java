@@ -29,6 +29,10 @@ public class User {
     @Column(length = 20)
     private String password;
     private int flag;
+    private int inprogress;
+    private int completed;
+    private int assigned;
+
 
      @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role", referencedColumnName = "id")
