@@ -1,16 +1,14 @@
 // src/main/java/com/yourcompany/lms/controller/UserController.java
 package com.example.centrix.controllers;
 
-import com.example.centrix.dto.UserDTO;
 import com.example.centrix.entity.User;
-import com.example.centrix.mapper.UserMapper;
 import com.example.centrix.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
+import java.util.*;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
@@ -18,42 +16,29 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private UserMapper userMapper;
-    
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserRepository userRepository, UserMapper userMapper) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
+    // GET all users
     @GetMapping("/users")
-    public List<UserDTO> getAllUsers() {
+    public List<User> getAllUsers() {
         logger.info("Fetching all users");
         List<User> users = userRepository.findAll();
         logger.debug("Found {} users", users.size());
-        return userMapper.toUserDtoList(users);
+        return users;
     }
 
-<<<<<<< HEAD
-    @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable Integer id) {
-        User user = userRepository.findById(id)
-=======
     // GET user by ID
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable Integer id) {
         return userRepository.findById(id)
->>>>>>> 4c4aa272be2ec416caafdfb6986143e85feeddf3
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return userMapper.toDto(user);
     }
-
     @GetMapping("auth/user/{email}")
-    public UserDTO getUserByEmail(@PathVariable String email) {
-        User user = userRepository.findByEmail(email);
-        return userMapper.toDto(user);
+    public User getUserByEmail(@PathVariable String email) {
+        return userRepository.findByEmail(email);
     }
 }
