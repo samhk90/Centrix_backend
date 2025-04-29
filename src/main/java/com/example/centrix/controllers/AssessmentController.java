@@ -35,8 +35,14 @@ public class AssessmentController {
         return assessmentService.createUserResponse(request);
     }
 
-    @PostMapping("/calculateresult")
-    public ResultsDTO calculateResult(@RequestBody CalculateResultRequestDTO request) {
+    @GetMapping("/calculateresult/{userId}/{assessmentId}")
+    public ResultsDTO calculateResult(@PathVariable Integer userId, @PathVariable Integer assessmentId,
+                                      @RequestParam Long timetaken) {
+        CalculateResultRequestDTO request = new CalculateResultRequestDTO();
+        request.setUserId(userId);
+        request.setAssessmentId(assessmentId);
+        request.setTimeTaken(timetaken);
+
         return assessmentService.calculateResult(request);
     }
 

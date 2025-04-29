@@ -13,6 +13,8 @@ public class UserDTO {
     private int completed;
     private  int assigned;
     private  int inprogress;
+    private String location;
+    private int Assessmentnumber;
     private RoleDTO role;
     private ChapterDTO chapter;
 }

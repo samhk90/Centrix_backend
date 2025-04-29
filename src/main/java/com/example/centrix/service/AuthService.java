@@ -5,6 +5,7 @@ import com.example.centrix.dto.request.AuthRequestDTO;
 import com.example.centrix.entity.User;
 import com.example.centrix.mapper.UserMapper;
 import com.example.centrix.repository.AuthRepository;
+import com.example.centrix.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public class AuthService {
     @Autowired
     private AuthRepository authRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
 
@@ -27,6 +30,16 @@ public class AuthService {
         if (user == null || !request.getPassword().equals(user.getPassword())) {
             return null;
         }
+
+        return userMapper.toDto(user);
+    }
+    public UserDTO userInfo(Integer userId) {
+        if (userId == null) {
+            return null;
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         return userMapper.toDto(user);
     }

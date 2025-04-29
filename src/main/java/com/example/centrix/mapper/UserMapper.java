@@ -19,6 +19,10 @@ public class UserMapper {
         dto.setEmployeeid(user.getEmployeeid());
         dto.setEmail(user.getEmail());
         dto.setFlag(user.getFlag());
+        dto.setLocation(user.getLocation());
+        dto.setCompleted(user.getCompleted());
+        dto.setAssessmentnumber(user.getAssessmentnumber());
+        dto.setInprogress(user.getInprogress());
         dto.setRole(toRoleDto(user.getRole()));
         dto.setChapter(toChapterDto(user.getChapter()));
         return dto;

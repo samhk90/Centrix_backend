@@ -32,7 +32,8 @@ public class User {
     private int inprogress;
     private int completed;
     private int assigned;
-
+    private String location;
+    private int Assessmentnumber;
 
      @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role", referencedColumnName = "id")

@@ -121,9 +121,7 @@ public class AssessmentService {
 
     public ResultsDTO getResult(Integer userId, Integer assessmentId) {
         results result = resultsRepository.findByUserIdAndAssessment_AssessmentId(userId, assessmentId);
-        if (result == null) {
-            throw new RuntimeException("Result not found for user " + userId + " and assessment " + assessmentId);
-        }
+
         return assessmentMapper.toResultsDTO(result);
     }
 
