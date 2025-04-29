@@ -12,6 +12,9 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
     List<Enrollment> findByUser(User user);
     List<Enrollment> findByUser_Uid(Integer uid);
-    List<Enrollment> findByUserAndCourse(User user,Course course);
+    List<Enrollment> findFirstByUserAndCourse(User user, Course course);
+
     boolean existsByUserAndCourse(User user, Course course);
+
+
 }

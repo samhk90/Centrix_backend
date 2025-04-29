@@ -1,7 +1,6 @@
 package com.example.centrix.repository;
 
 import com.example.centrix.entity.Assessment;
-import com.example.centrix.entity.results;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

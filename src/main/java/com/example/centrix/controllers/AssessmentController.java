@@ -1,17 +1,12 @@
 package com.example.centrix.controllers;
 
-
-import com.example.centrix.entity.Assessment;
-import com.example.centrix.entity.Questions;
-import com.example.centrix.entity.UserResponse;
-import com.example.centrix.entity.results;
+import com.example.centrix.dto.*;
+import com.example.centrix.dto.request.CalculateResultRequestDTO;
+import com.example.centrix.dto.request.CreateUserResponseRequestDTO;
 import com.example.centrix.service.AssessmentService;
-import com.example.centrix.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -21,41 +16,47 @@ public class AssessmentController {
     private AssessmentService assessmentService;
 
     @GetMapping("/assessmentinstruction/{courseId}")
-    public List<Assessment> getCoursesByCourseId(@PathVariable Integer courseId) {
+    public List<AssessmentDTO> getCoursesByCourseId(@PathVariable Integer courseId) {
         return assessmentService.getCoursesByCourseId(courseId);
     }
+
     @GetMapping("/assessmentinfo/{assessmentId}")
-    public List<Assessment> getAssessmentById(@PathVariable Integer assessmentId) {
+    public List<AssessmentDTO> getAssessmentById(@PathVariable Integer assessmentId) {
         return assessmentService.getAssesmentByassessmentId(assessmentId);
     }
+
     @GetMapping("/questions/{assessmentId}/{queId}")
-    public List<Questions> getQuestions(@PathVariable Integer assessmentId,@PathVariable Integer queId) {
-        return assessmentService.getQuetions(assessmentId,queId);
-    }
-    @PostMapping("/userresponse")
-    public UserResponse createUserResponse(@RequestBody UserResponse userreponse) {
-        return assessmentService.createUserResponse(userreponse);
+    public List<QuestionsDTO> getQuestions(@PathVariable Integer assessmentId, @PathVariable Integer queId) {
+        return assessmentService.getQuetions(assessmentId, queId);
     }
 
-    @GetMapping("/calculateresult/{userId}/{assessmentId}")
-    public results calculateResult(@PathVariable Integer userId, @PathVariable Integer assessmentId,
-                                   @RequestParam Long timetaken) {
-        return assessmentService.calculateResult(userId, assessmentId,timetaken);
+    @PostMapping("/userresponse")
+    public UserResponseDTO createUserResponse(@RequestBody CreateUserResponseRequestDTO request) {
+        return assessmentService.createUserResponse(request);
     }
+
+    @PostMapping("/calculateresult")
+    public ResultsDTO calculateResult(@RequestBody CalculateResultRequestDTO request) {
+        return assessmentService.calculateResult(request);
+    }
+
     @GetMapping("/getresults/{userId}/{assessmentId}")
-    public results getResult(@PathVariable Integer userId,@PathVariable Integer assessmentId){
-        return assessmentService.getResult(userId,assessmentId);
+    public ResultsDTO getResult(@PathVariable Integer userId, @PathVariable Integer assessmentId) {
+        return assessmentService.getResult(userId, assessmentId);
     }
+
     @GetMapping("/getAllResults/{userId}")
-    public List<results> getAllResults(@PathVariable Integer userId){
-        return  assessmentService.getAllResults(userId);
+    public List<ResultsDTO> getAllResults(@PathVariable Integer userId) {
+        return assessmentService.getAllResults(userId);
     }
+
     @GetMapping("/getuserresponse/{assessmentId}")
-    public  List<UserResponse> getUserResponse(@PathVariable Integer assessmentId){
+    public List<UserResponseDTO> getUserResponse(@PathVariable Integer assessmentId) {
         return assessmentService.getUserResponsesByAssessmentId(assessmentId);
     }
+
     @GetMapping("/assessments/user/{userId}")
-    public List<Assessment> getAssessmentsByUserId(@PathVariable Integer userId) {
+    public List<AssessmentDTO> getAssessmentsByUserId(@PathVariable Integer userId) {
         return assessmentService.getAssessmentsByUserId(userId);
     }
 }
