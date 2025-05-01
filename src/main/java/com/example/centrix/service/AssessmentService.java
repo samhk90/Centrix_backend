@@ -45,9 +45,8 @@ public class AssessmentService {
         return assessmentMapper.toAssessmentDTOList(assessments);
     }
 
-    public List<QuestionsDTO> getQuetions(Integer assessmentId, Integer queId) {
-        Integer newQueId = queId + 1;
-        List<Questions> questions = questionsRepository.findByAssessment_AssessmentIdAndQueId(assessmentId, newQueId);
+    public List<QuestionsDTO> getQuestions(Integer assessmentId) {
+        List<Questions> questions = questionsRepository.findByAssessment_AssessmentId(assessmentId);
         return assessmentMapper.toQuestionDTOList(questions);
     }
 
@@ -75,9 +74,8 @@ public class AssessmentService {
             response.setUserId(request.getUserId());
             response.setQuestion(question);
         }
-        
-        response.setSelectedoption(request.getSelectedOption());
-        response.setIsresponsecorrect(request.getIsResponseCorrect());
+        response.setSelectedoption(request.getSelectedoption());
+        response.setIsresponsecorrect(request.getIsresponsecorrect());
 
         return assessmentMapper.toUserResponseDTO(userResponseRepository.save(response));
     }

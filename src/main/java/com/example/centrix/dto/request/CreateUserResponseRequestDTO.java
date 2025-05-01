@@ -6,6 +6,6 @@ import lombok.Data;
 public class CreateUserResponseRequestDTO {
     private Integer userId;
     private Integer questionId;
-    private String selectedOption;
-    private Boolean isResponseCorrect;
+    private String selectedoption;
+    private Boolean isresponsecorrect   ;
 }

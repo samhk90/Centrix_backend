@@ -2,8 +2,6 @@ package com.example.centrix.controllers;
 
 import com.example.centrix.dto.LeaderboardDTO;
 import com.example.centrix.dto.LeaderboardUserDTO;
-import com.example.centrix.entity.User;
-import com.example.centrix.service.AuthService;
 import com.example.centrix.service.LeaderboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +15,6 @@ public class LeaderboardContoller {
     @Autowired
     private LeaderboardService leaderboardService;
 
-    @Autowired
-    private AuthService authService;
     @GetMapping("/leaderboard")
     public ResponseEntity<List<LeaderboardDTO>> getAllLeaderboard() {
         return ResponseEntity.ok(leaderboardService.getLeaderboard());

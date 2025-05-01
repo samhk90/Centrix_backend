@@ -25,9 +25,9 @@ public class AssessmentController {
         return assessmentService.getAssesmentByassessmentId(assessmentId);
     }
 
-    @GetMapping("/questions/{assessmentId}/{queId}")
-    public List<QuestionsDTO> getQuestions(@PathVariable Integer assessmentId, @PathVariable Integer queId) {
-        return assessmentService.getQuetions(assessmentId, queId);
+    @GetMapping("/questions/{assessmentId}")
+    public List<QuestionsDTO> getQuestions(@PathVariable Integer assessmentId) {
+        return assessmentService.getQuestions(assessmentId);
     }
 
     @PostMapping("/userresponse")

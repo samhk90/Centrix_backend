@@ -35,11 +35,19 @@ public class CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private ResultsRepository resultsRepository;
+
+    @Autowired
+    private AssessmentRepository assessmentRepository;
+
+
     @Transactional(readOnly = true)
     public List<CourseDTO> getCourses(Integer userId) {
         List<Course> courses = courseRepository.findAll();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         courses.forEach(course -> {
             if (course.getChapter() != null) {
                 course.getChapter().getName();
@@ -50,24 +58,16 @@ public class CourseService {
         });
 
         List<Course> filteredCourses = courses.stream()
-                .filter(course -> {
-                    // Get enrollment for this course and user
-                    List<Enrollment> enrollments = enrollmentRepository.findFirstByUserAndCourse(user, course);
-                    
-                    // If there's no enrollment or the enrollment progress is less than 100
-                    boolean shouldInclude = !enrollments.isEmpty() ? 
-                            enrollments.get(0).getProgress() < 100 : 
-                            true;
-
-                    return shouldInclude 
-                            && course.getChapter() != null
-                            && course.getChapter().getId().equals(user.getChapter().getId());
-                })
+                .filter(course ->
+                        // Filter enrolled courses
+                        !enrollmentRepository.existsByUserAndCourse(user, course)
+                                // Filter courses by chapter
+                                && course.getChapter() != null
+                                && course.getChapter().getId().equals(user.getChapter().getId()))
                 .collect(Collectors.toList());
 
         return courseMapper.toCourseDtoList(filteredCourses);
     }
-
     @Transactional(readOnly = true)
     public List<CourseDTO> getCoursesByCourseId(Integer courseId) {
         List<Course> courses = courseRepository.findBycourseId(courseId);
@@ -98,5 +98,38 @@ public class CourseService {
             course.setSections(sections);
         }
         return courseMapper.toCourseDtoList(courses);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CourseDTO> getCompletedCourses(Integer userId) {
+        List<Enrollment> enrollments = enrollmentRepository.findByUser_Uid(userId);
+        
+        List<Course> completedCourses = enrollments.stream()
+                .filter(enrollment -> {
+                    // Check if progress is 100%
+                    if (enrollment.getProgress() != 100) {
+                        return false;
+                    }
+                    
+                    // Get assessment for this course
+                    List<Assessment> assessments = assessmentRepository.findByCourse_CourseId(enrollment.getCourseId());
+                    if (assessments.isEmpty()) {
+                        return false;
+                    }
+                    
+                    // Check if user has passed the assessment
+                    for (Assessment assessment : assessments) {
+                        results result = resultsRepository.findByUserIdAndAssessment_AssessmentId(userId, assessment.getAssessmentId());
+                        if (result == null || !"PASS".equals(result.getStatus())) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                })
+                .map(Enrollment::getCourse)
+                .collect(Collectors.toList());
+
+        return courseMapper.toCourseDtoList(completedCourses);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.centrix.service;
 
 import com.example.centrix.dto.EnrollmentDTO;
+import com.example.centrix.dto.CourseDTO;
 import com.example.centrix.entity.Enrollment;
 import com.example.centrix.entity.User;
 import com.example.centrix.entity.Course;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 @Service
@@ -32,11 +36,26 @@ public class EnrollmentService {
     @Autowired
     private EnrollmentMapper enrollmentMapper;
 
+    @Autowired
+    private CourseService courseService;
+
     @Transactional(readOnly = true)
     public List<EnrollmentDTO> getEnrollmentsByUserId(Integer userId) {
         logger.debug("Fetching enrollments for user ID: {}", userId);
         List<Enrollment> enrollments = enrollmentRepository.findByUser_Uid(userId);
-        return enrollmentMapper.toEnrollmentDtoList(enrollments);
+        
+        // Get completed courses
+        List<CourseDTO> completedCourses = courseService.getCompletedCourses(userId);
+        Set<Integer> completedCourseIds = completedCourses.stream()
+                .map(CourseDTO::getCourseId)
+                .collect(Collectors.toSet());
+
+        // Filter out completed courses
+        List<Enrollment> filteredEnrollments = enrollments.stream()
+                .filter(enrollment -> !completedCourseIds.contains(enrollment.getCourseId()))
+                .collect(Collectors.toList());
+
+        return enrollmentMapper.toEnrollmentDtoList(filteredEnrollments);
     }
 
     @Transactional(readOnly = true)
@@ -95,6 +114,10 @@ public class EnrollmentService {
         Course course = courseRepository.findById(courseId)
             .orElseThrow(() -> new IllegalArgumentException("Course not found"));
         
+        // Increment user's inprogress count
+        user.setInprogress(user.getInprogress() + 1);
+        userRepository.save(user);
+        
         Enrollment newEnrollment = new Enrollment();
         newEnrollment.setUser(user);
         newEnrollment.setCourse(course);
@@ -105,6 +128,9 @@ public class EnrollmentService {
             return enrollmentMapper.toDto(enrollmentRepository.save(newEnrollment));
         } catch (Exception e) {
             logger.error("Error creating enrollment: ", e);
+            // Rollback inprogress count if enrollment fails
+            user.setInprogress(user.getInprogress() - 1);
+            userRepository.save(user);
             throw new RuntimeException("Failed to create enrollment", e);
         }
     }

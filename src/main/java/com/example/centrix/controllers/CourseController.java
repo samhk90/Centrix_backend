@@ -19,6 +19,11 @@ public class CourseController {
         return courseService.getCourses(userId);
     }
 
+    @GetMapping("/courses/completed/{userId}")
+    public List<CourseDTO> getCompletedCourses(@PathVariable Integer userId) {
+        return courseService.getCompletedCourses(userId);
+    }
+
     @PostMapping("/enrolledcourse/{courseId}")
     public List<CourseDTO> getCoursesWithSTA(@PathVariable Integer courseId) {
         boolean flag = true;
